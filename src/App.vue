@@ -1,13 +1,16 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+  <board-field/>
 </template>
 
 <script>
 
+import boardField from "@/components/board-field";
+
 export default {
   name: 'App',
   components: {
+    boardField
   }
 }
 </script>
