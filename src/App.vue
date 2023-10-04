@@ -1,16 +1,17 @@
 <template>
-
-  <board-field/>
+  <hpg-header/>
 </template>
 
 <script>
 
-import boardField from "@/components/board-field";
+// import boardField from "@/components/board-field";
+import hpgHeader from "@/components/hpg-header";
 
 export default {
   name: 'App',
   components: {
-    boardField
+    // boardField,
+    hpgHeader
   }
 }
 </script>
@@ -22,6 +23,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
