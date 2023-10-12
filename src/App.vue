@@ -1,17 +1,13 @@
 <template>
-  <hpg-header/>
+  <RouterView/>
 </template>
 
 <script>
 
 // import boardField from "@/components/board-field";
-import hpgHeader from "@/components/hpg-header";
-
 export default {
   name: 'App',
   components: {
-    // boardField,
-    hpgHeader
   }
 }
 </script>

@@ -18,6 +18,22 @@
             <a class="nav-link" href="#">Текущая цель</a>
           </li>
         </ul>
+        <ul v-if="user==='guest'" class="navbar-nav">
+          <li class="nav-item">
+            <RouterLink to="/login" class="nav-link">Вход</RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink to="/register" class="nav-link">Регистрация</RouterLink>
+          </li>
+        </ul>
+        <ul v-else class="navbar-nav">
+          <li class="nav-item">
+            <RouterLink to="/me" class="nav-link">{{ user }}</RouterLink>
+          </li>
+          <li>
+            <a class="nav-link" @click="logout" href="/">Выход</a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -25,7 +41,18 @@
 
 <script>
 export default {
-  name: "hpg-header"
+  name: "hpg-header",
+  props: ['user', 'role'],
+  mounted() {
+    console.log(this.user)
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('token')
+      localStorage.removeItem('refresh')
+      this.$router.push('/')
+    }
+  }
 }
 </script>
 
