@@ -41,8 +41,12 @@ export default {
     },
     getUsers() {
       apiService.getUsers().then(response => {
-        this.users = response.data;
-        console.log(this.users)
+        if (response.data === null) {
+          this.users = []
+        } else {
+          this.users = response.data;
+          console.log(this.users)
+        }
       }).catch(error => {
         this.users = error.response.data;
         console.log(error.response)
