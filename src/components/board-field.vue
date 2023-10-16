@@ -3,40 +3,67 @@
     <div style="width: 100%; height: 15%; background-color: blue; border: 1px solid black">
     </div>
     <img :src="imageUrl" style="border: 1px solid black; height: 85%" />
+    <board-chip v-for="c in chip" :key="c.avatar_url" :imageUrl="image_base_url + c.avatar_url"
+                :style="randomPosition()" :color="c.color"></board-chip>
+
   </div>
   <div v-if="pos === 'left'" :class="'box'+id" class="field">
     <img :src="imageUrl" style="border: 1px solid black; width: 85%" />
     <div style="width: 15%; height: 100%; background-color: darkred; border: 1px solid black; float: right">
     </div>
+    <board-chip v-for="c in chip" :key="c.avatar_url" :imageUrl="image_base_url + c.avatar_url"
+                :style="randomPosition()" :color="c.color"></board-chip>
+
   </div>
   <div v-if="pos === 'corner'" :class="'box'+id" class="field">
     <img :src="imageUrl" style="border: 1px solid black" />
+    <board-chip v-for="c in chip" :key="c.avatar_url" :imageUrl="image_base_url + c.avatar_url"
+                :style="randomPosition()" :color="c.color"></board-chip>
   </div>
   <div v-if="pos === 'up'" :class="'box'+id" class="field">
     <img :src="imageUrl" style="border: 1px solid black; height: 85%" />
     <div style="width: 100%; height: 15%; background-color: deeppink; border: 1px solid black">
     </div>
+    <board-chip v-for="c in chip" :key="c.avatar_url" :imageUrl="image_base_url + c.avatar_url"
+                :style="randomPosition()" :color="c.color"></board-chip>
+
   </div>
   <div v-if="pos === 'right'" :class="'box'+id" class="field">
     <img :src="imageUrl" style="border: 1px solid black; width: 85%" />
     <div style="width: 15%; height: 100%; background-color: green; border: 1px solid black; float: left">
     </div>
+    <board-chip v-for="c in chip" :key="c.avatar_url" :imageUrl="image_base_url + c.avatar_url"
+                :style="randomPosition()" :color="c.color"></board-chip>
   </div>
 </template>
 
 <script>
 
 
-
+import boardChip from "@/components/board-chip";
 export default {
   name: "board-field",
-  props: ['id', 'imageUrl', ],
+  props: ['id', 'imageUrl', 'chip'],
+  components: {
+    boardChip,
+  },
   data() {
     return {
+      image_base_url: "http://localhost:8080",
       pos: null
     }
   },
+  methods: {
+    randomPosition() {
+      return {
+        position: "absolute",
+        top: Math.random() * 80 + "%",
+        left: Math.random() * 80 + "%",
+      }
+    }
+  },
   mounted() {
+    console.log(this.chip)
     if (1<this.id && this.id<11) {
       this.pos = "down";
     } else if (11<this.id && this.id<21) {
@@ -200,6 +227,7 @@ img {
   height: 100%;
 }
 .field {
+  position: relative;
   width: 100%;
   height: 100%;
 }

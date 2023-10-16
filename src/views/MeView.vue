@@ -12,6 +12,11 @@
       <input type="color" v-model="color">
       <button @click="changeColor">Change</button>
     </div>
+    <div v-if="current_game">
+      <h2> Текущая игра: {{current_game}}</h2>
+      <button @click="completeGame"> Завершить </button>
+      <button @click="rerollGame"> Реролл </button>
+    </div>
     <h2>Items</h2>
     <div v-for="item in items" :key="item.id">
       <h3>{{item.name}}</h3>
@@ -42,16 +47,19 @@ export default {
       items: [],
       effects: [],
       correct : true,
-      image: null
+      image: null,
+      current_game: null
     }
   },
   mounted() {
     apiService.getMe().then(response => {
+      console.log(response)
       this.username = response.data.username;
       this.avatar = response.data.avatar;
       this.color = response.data.color;
       this.items = response.data.items;
       this.effects = response.data.effects;
+      this.current_game = response.data.current_game;
     }).catch(error => {
       console.log(error.response)
       if (error.response.data.error === "No Authorization Header Provided") {

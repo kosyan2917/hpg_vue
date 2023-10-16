@@ -1,10 +1,13 @@
 import {createRouter, createWebHistory} from "vue-router";
 import { createApp } from 'vue'
+// import Vue from 'vue'
 import App from './App.vue'
 import BoardView from "@/views/BoardView";
 import LoginView from "@/views/LoginView";
 import RegisterView from "@/views/RegistationView";
 import MeView from "@/views/MeView";
+import {store} from "./store";
+
 
 const router = createRouter({
     history: createWebHistory(),
@@ -15,5 +18,14 @@ const router = createRouter({
         {path: '/me', component: MeView}
     ]
 })
+//
+// new Vue({
+//     router,
+//     store,
+//     render: h => h(App),
+// }).$mount('#app')
 
-createApp(App).use(router).mount('#app')
+const app = createApp(App)
+app.use(router)
+app.use(store)
+app.mount('#app')

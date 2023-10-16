@@ -55,6 +55,7 @@ class ApiService {
                 headers: {
                     token: token,
                 }
+
             }
         }
     }
@@ -102,6 +103,12 @@ class ApiService {
                 token: response.data.token,
                 refresh: response.data.refresh_token
             }
+        }).catch((error) => {
+            if (error.response.status === 403) {
+                localStorage.removeItem('token')
+                localStorage.removeItem('refresh')
+                window.location.reload()
+            }
         })
     }
 
@@ -116,6 +123,27 @@ class ApiService {
     async changeColor(color) {
         return this.api.put(`${this._apiBase}users/change-color`, color)
     }
+
+    async getUsers() {
+        return this.getResource('users')
+    }
+
+    async roll() {
+        return this.getResource('roll')
+    }
+
+    async setCurrentGame(game) {
+        return this.api.put(`${this._apiBase}game`, game)
+    }
+
+    async getCurrentGame() {
+        return this.getResource('game')
+    }
+
+    async getField(id) {
+        return this.getResource(`field/${id}`)
+    }
+
 }
 
 export const apiService = new ApiService()

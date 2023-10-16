@@ -1,6 +1,6 @@
 <template>
   <hpg-header :user="user.name" :role="user.role"/>
-  <game-board :fields="fields"/>
+  <game-board :fields="fields" :chips="users" @roll="roll"/>
 </template>
 
 <script>
@@ -13,28 +13,48 @@ export default {
   name: 'BoardView',
   components: {
     gameBoard,
-    hpgHeader
+    hpgHeader,
   },
   data () {
     return {
+      base_url: "http://localhost:8080",
       fields: [],
-      user: {}
+      user: {},
+      users: [],
     }
   },
-    mounted() {
-    apiService.getBoard().then(response => {
-      this.fields = response.data.fields;
-      this.user = response.data.user;
-      console.log(this.user)
-    }).catch(error => {
-      console.log(error.response)
-      if (error.response.status === 403) {
-        this.fields = error.response.data.fields;
-        this.user = error.response.data.user;
-      } else {
-        this.$router.push('/login')
-      }
-    })
+  methods: {
+    getFields() {
+      apiService.getBoard().then(response => {
+        this.fields = response.data.fields;
+        this.user = response.data.user;
+        console.log(this.user)
+      }).catch(error => {
+        console.log(error.response)
+        if (error.response.status === 403) {
+          this.fields = error.response.data.fields;
+          this.user = error.response.data.user;
+        } else {
+          this.$router.push('/login')
+        }
+      })
+    },
+    getUsers() {
+      apiService.getUsers().then(response => {
+        this.users = response.data;
+        console.log(this.users)
+      }).catch(error => {
+        this.users = error.response.data;
+        console.log(error.response)
+      })
+    },
+    roll() {
+      this.getUsers()
+    },
+  },
+  mounted() {
+    this.getFields()
+    this.getUsers()
   }
 }
 </script>
