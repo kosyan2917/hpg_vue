@@ -14,6 +14,7 @@
                 @closePopup="closeRollPopup"
                 :error="error"
                 :currentGame="currentGame"
+                :msg="msg"
     />
 
   </div>
@@ -40,7 +41,8 @@ export default {
       dice2: "",
       currentGame: "",
       pos: null,
-      error: false
+      error: false,
+      msg: ""
     }
   },
   components: {
@@ -77,6 +79,8 @@ export default {
         this.$emit('roll')
         this.isRollPopup = true
         this.error = false
+        this.msg = response.data.msg
+        console.log("Запрос на ролл", response.data)
       }).catch(error => {
         console.log(error)
         if (error.response.status === 500 && error.response.data.error === "No Authorization Header Provided") {

@@ -18,13 +18,28 @@
               <li v-if="params.condition"> Ролл по следующим условиям: {{params.condition}}</li>
             </ul>
             <input v-model="newGame" :class="input_style" type="text" placeholder="Введите название игры" name="game">
-        </div>
+          </div>
+          <div v-if="params.type === 'program'">
+            <p>{{msg}}</p>
+            <p > Перейдите на этот <a href="https://gamegauntlets.com/" target="_blank" rel="noopener noreferrer">сайт</a>,
+              сделайте ролл по следующим  правилам и введите название игры в поле:</p>
+            <ul>
+              <li v-if="params.high"> Время прохождения от {{params.low}} до {{params.high}} часов</li>
+              <li v-if="params.tags"> Тэги для игры: {{params.tags}}</li>
+              <li v-if="params.games"> Ролл из следующего списка игр: {{params.games}}</li>
+              <li v-if="params.rating"> Рейтинг игры {{params.rating}}</li>
+              <li v-if="params.condition"> Ролл по следующим условиям: {{params.condition}}</li>
+            </ul>
+
+          </div>
+
         <button @click="closePopup"> Ок </button>
         </div>
         <div v-if="error">
           <template v-if="currentGame === ''">
             <h1> У вас после прошлого броска не установлена игра</h1>
             <div v-if="params.type==='common'">
+              <p> {{msg}} </p>
               <p > Перейдите на этот <a href="https://gamegauntlets.com/" target="_blank" rel="noopener noreferrer">сайт</a>,
                 сделайте ролл по следующим правилам и введите название игры в поле:</p>
               <ul>
@@ -62,7 +77,8 @@ export default {
     isOpen: Boolean,
     pos: Number,
     error: Boolean,
-    currentGame: String
+    currentGame: String,
+    msg: String
   },
   emits: {
     closePopup: null
@@ -100,9 +116,24 @@ export default {
   mounted() {
     apiService.getField(this.pos).then(response => {
       console.log(response.data)
-      this.params = response.data
       this.name = response.data.name
       this.params = response.data
+      console.log("Тип:", this.params.type)
+      if (this.params.type === "program") {
+        console.log("Я залез, тут пусто")
+        if (this.name === "Тюрьма") {
+          apiService.getField(this.pos-1).then(response => {
+            this.params = response.data
+          })
+        } else if (this.name === "Подлянка/Кайфарик") {
+          'Добавим попозже'
+        } else {
+          apiService.getField(this.pos+1).then(response => {
+            this.params = response.data
+          })
+        }
+      }
+      console.log("После ифов парамсы", this.params)
     })
   }
 
